@@ -1,31 +1,25 @@
 import React from 'react';
 import useCollection from './useCollection';
+import FirstUserMessage from './FirstUserMessage';
 
-function Messages() {
-  const messages = useCollection('channels/general/messages', 'createdAt');
+function Messages({ channelId }) {
+  const messages = useCollection(`channels/${channelId}/messages`, 'createdAt');
 
   return (
     <div className="Messages">
       <div className="EndOfMessages">That's every message!</div>
       {messages.map((message, index) => {
-        return index === 0 ? (
-          <div key={message.id}>
-            <div className="Day">
-              <div className="DayLine" />
-              <div className="DayText">12/6/2018</div>
-              <div className="DayLine" />
-            </div>
-            <div className="Message with-avatar">
-              <div className="Avatar" />
-              <div className="Author">
-                <div>
-                  <span className="UserName">Ryan Florence </span>
-                  <span className="TimeStamp">3:37 PM</span>
-                </div>
-                <div className="MessageContent">{message.text}</div>
-              </div>
-            </div>
-          </div>
+        const previousMessage = messages[index - 1];
+        const showDay = false;
+        const showAvatar =
+          !previousMessage || message.user.id !== previousMessage.user.id;
+
+        return showAvatar ? (
+          <FirstUserMessage
+            key={message.id}
+            message={message}
+            showDay={showDay}
+          />
         ) : (
           <div key={message.id}>
             <div className="Message no-avatar">

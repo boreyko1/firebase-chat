@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { firebase } from './firebase';
+import { Router, Redirect } from '@reach/router';
+
+import { firebase, db } from './firebase';
 
 import Nav from './Nav';
 import Channel from './Channel';
@@ -10,7 +12,10 @@ function App() {
   return user ? (
     <div className="App">
       <Nav user={user} />
-      <Channel />
+      <Router>
+        <Channel path="channel/:channelId" user={user} />
+        <Redirect from="/" to="channel/general" noThrow />
+      </Router>
     </div>
   ) : (
     <Login />
@@ -51,11 +56,15 @@ function useAuth() {
     () =>
       firebase.auth().onAuthStateChanged(user => {
         if (user) {
-          setUser({
+          const userInfo = {
             displayName: user.displayName,
             photoURL: user.photoURL,
             uid: user.uid
-          });
+          };
+          setUser(userInfo);
+          db.collection('users')
+            .doc(userInfo.uid)
+            .set(userInfo, { merge: true });
         } else {
           setUser(null);
         }
