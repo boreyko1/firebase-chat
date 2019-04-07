@@ -16,7 +16,7 @@ function useCollection(path, orderBy) {
       const docs = snapshot.docs.map(collectIdsAndDocs);
       setDocs(docs);
     });
-  }, []);
+  }, [path, orderBy]);
 
   return docs;
 }

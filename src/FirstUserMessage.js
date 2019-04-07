@@ -1,23 +1,9 @@
-import React, { useState, useEffect } from 'react';
-import { db } from './firebase';
+import React from 'react';
 
-function useDoc(path) {
-  const [doc, setDoc] = useState(null);
-
-  useEffect(() => {
-    return db.doc(path).onSnapshot(doc =>
-      setDoc({
-        ...doc.data(),
-        id: doc.id
-      })
-    );
-  }, []);
-
-  return doc;
-}
+import useDocWithCache from './useDocWithCache';
 
 function FirstUserMessage({ message, showDay }) {
-  const author = useDoc(message.user.path);
+  const author = useDocWithCache(message.user.path);
 
   return (
     <div key={message.id}>
