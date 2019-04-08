@@ -1,4 +1,5 @@
 import React from 'react';
+import formatDate from 'date-fns/format';
 
 import useDocWithCache from './useDocWithCache';
 
@@ -10,7 +11,9 @@ function FirstUserMessage({ message, showDay }) {
       {showDay && (
         <div className="Day">
           <div className="DayLine" />
-          <div className="DayText">12/6/2018</div>
+          <div className="DayText">
+            {formatDate(message.createdAt.seconds * 1000, 'Do MMMM')}
+          </div>
           <div className="DayLine" />
         </div>
       )}
@@ -24,7 +27,9 @@ function FirstUserMessage({ message, showDay }) {
         <div className="Author">
           <div>
             <span className="UserName">{author && author.displayName}</span>{' '}
-            <span className="TimeStamp">3:37 PM</span>
+            <span className="TimeStamp">
+              {formatDate(message.createdAt.seconds * 1000, 'h:mm A')}
+            </span>
           </div>
           <div className="MessageContent">{message.text}</div>
         </div>
