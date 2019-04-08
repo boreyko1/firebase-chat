@@ -1,17 +1,21 @@
 import React from 'react';
 
-function ChannelInfo() {
+import useDoc from './useDoc';
+
+function ChannelInfo({ channelId }) {
+  const channel = useDoc(`channels/${channelId}`);
+
   return (
     <div className="ChannelInfo">
       <div className="Topic">
         Topic:{' '}
         <input
           className="TopicInput"
-          value="Awesome stuff"
+          value={channel ? channel.topic : ''}
           onChange={() => {}}
         />
       </div>
-      <div className="ChannelName">#general</div>
+      <div className="ChannelName">#{channelId}</div>
     </div>
   );
 }

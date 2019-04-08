@@ -8,7 +8,7 @@ function Channel({ user, channelId }) {
   return (
     <div className="Channel">
       <div className="ChannelMain">
-        <ChannelInfo />
+        <ChannelInfo channelId={channelId} />
         <Messages channelId={channelId} />
         <ChatInputBox user={user} channelId={channelId} />
       </div>
