@@ -2,8 +2,10 @@ import { useState, useEffect } from 'react';
 import { db } from './firebase';
 import { collectIdsAndDocs } from './utilities';
 
-function useCollection(path, orderBy) {
+function useCollection(path, orderBy, where = []) {
   const [docs, setDocs] = useState([]);
+
+  const [queryField, queryOperator, queryValue] = where;
 
   useEffect(() => {
     let collection = db.collection(path);
@@ -12,11 +14,15 @@ function useCollection(path, orderBy) {
       collection = collection.orderBy(orderBy);
     }
 
+    if (queryField) {
+      collection = collection.where(queryField, queryOperator, queryValue);
+    }
+
     return collection.onSnapshot(snapshot => {
       const docs = snapshot.docs.map(collectIdsAndDocs);
       setDocs(docs);
     });
-  }, [path, orderBy]);
+  }, [path, orderBy, queryField, queryOperator, queryValue]);
 
   return docs;
 }
