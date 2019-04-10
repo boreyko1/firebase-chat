@@ -12,9 +12,9 @@ function Members({ channelId }) {
   return (
     <div className="Members">
       <div>
-        {members.map(member => (
+        {members.sort(sortByName).map(member => (
           <div key={member.id} className="Member">
-            <div className="MemberStatus online" />
+            <div className={`MemberStatus ${member.status.state}`} />
             {member.displayName}
           </div>
         ))}
@@ -22,5 +22,8 @@ function Members({ channelId }) {
     </div>
   );
 }
+
+const sortByName = (a, b) =>
+  a.displayName - b.displayName ? 1 : b.displayName - a.displayName ? -1 : 0;
 
 export default Members;
