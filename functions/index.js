@@ -3,3 +3,4 @@ admin.initializeApp();
 
 exports.onUserStatusChanged = require('./triggers/onUserStatusChanged');
 exports.helloWorld = require('./routes/helloWorld');
+exports.onCleverbotMessage = require('./triggers/onCleverbotMessage');
